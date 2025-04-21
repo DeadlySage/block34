@@ -1,0 +1,135 @@
+cells:
+  - kind: 2
+    languageId: sql
+    value: "DROP TABLE IF EXISTS customer CASCADE;\r
+
+      CREATE TABLE customer(\r
+
+      \  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),\r
+
+      \  name VARCHAR(80)\r
+
+      );"
+    metadata: {}
+  - kind: 2
+    languageId: sql
+    value: "DROP TABLE IF EXISTS restaurant CASCADE;\r
+
+      CREATE TABLE restaurant(\r
+
+      \  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),\r
+
+      \  name VARCHAR(80)\r
+
+      );"
+    metadata: {}
+  - kind: 2
+    languageId: sql
+    value: "DROP TABLE IF EXISTS reservation CASCADE;\r
+
+      CREATE TABLE reservation(\r
+
+      \  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),\r
+
+      \  date DATE NOT NULL,\r
+
+      \  party_count INTEGER NOT NULL,\r
+
+      \  restaurant_id UUID REFERENCES restaurant(id) ON DELETE CASCADE ON
+      UPDATE CASCADE NOT NULL,\r
+
+      \  customer_id UUID REFERENCES customer(id) ON DELETE CASCADE ON UPDATE
+      CASCADE NOT NULL,\r
+
+      \  UNIQUE(restaurant_id, customer_id)\r
+
+      );"
+    metadata: {}
+  - kind: 2
+    languageId: sql
+    value: "INSERT INTO restaurant(name) VALUES('The Sizzling Spoon');\r
+
+      INSERT INTO restaurant(name) VALUES('Crimson & Thyme');\r
+
+      INSERT INTO restaurant(name) VALUES('Taco Tango');\r
+
+      INSERT INTO restaurant(name) VALUES('Midnight Marinara');\r
+
+      INSERT INTO restaurant(name) VALUES('Zen Griddle');"
+    metadata: {}
+  - kind: 2
+    languageId: sql
+    value: "INSERT INTO customer(name) VALUES('Ava Thompson');\r
+
+      INSERT INTO customer(name) VALUES('Jake Martinez');\r
+
+      INSERT INTO customer(name) VALUES('Lila Patel');\r
+
+      INSERT INTO customer(name) VALUES('Ethan Nguyen');\r
+
+      INSERT INTO customer(name) VALUES('Sofia Ramirez');"
+    metadata: {}
+  - kind: 2
+    languageId: sql
+    value: "INSERT INTO reservation(date, party_count, restaurant_id, customer_id)
+      \r
+
+      VALUES (\r
+
+      \  '2025-05-01',\r
+
+      \  4,\r
+
+      \  (SELECT id FROM restaurant WHERE name = 'The Sizzling Spoon'),\r
+
+      \  (SELECT id FROM customer WHERE name = 'Ava Thompson')\r
+
+      \  );\r
+
+      \r
+
+      INSERT INTO reservation(date, party_count, restaurant_id, customer_id) \r
+
+      VALUES (\r
+
+      \  '2025-04-29',\r
+
+      \  6,\r
+
+      \  (SELECT id FROM restaurant WHERE name = 'The Sizzling Spoon'),\r
+
+      \  (SELECT id FROM customer WHERE name = 'Jake Martinez')\r
+
+      \  );"
+    metadata: {}
+  - kind: 2
+    languageId: sql
+    value: SELECT * FROM customer;
+    metadata: {}
+  - kind: 2
+    languageId: sql
+    value: SELECT * FROM restaurant;
+    metadata: {}
+  - kind: 2
+    languageId: sql
+    value: SELECT * FROM reservation;
+    metadata: {}
+  - kind: 2
+    languageId: sql
+    value: "DELETE FROM reservation \r
+
+      WHERE restaurant_id = (SELECT id FROM restaurant WHERE name = 'The
+      Sizzling Spoon') \r
+
+      AND customer_id = (SELECT id FROM customer WHERE name = 'Ava Thompson');"
+    metadata: {}
+  - kind: 2
+    languageId: sql
+    value: SELECT sum(numbackends) FROM pg_stat_database;
+    metadata: {}
+metadata:
+  conn:
+    id: LMq4N3XvQXPxzny-oKoBn
+    name: Sage-PC PostgreSQL
+  database: acme_reservation_planner_db
+  schema: public
