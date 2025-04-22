@@ -112,7 +112,21 @@ cells:
     metadata: {}
   - kind: 2
     languageId: sql
-    value: SELECT * FROM reservation;
+    value: "SELECT reservation.id, \r
+
+      reservation.date, \r
+
+      reservation.party_count, \r
+
+      restaurant.name AS restaurant_name, \r
+
+      customer.name AS customer_name\r
+
+      FROM reservation\r
+
+      INNER JOIN restaurant ON reservation.restaurant_id = restaurant.id\r
+
+      INNER JOIN customer ON reservation.customer_id = customer.id;"
     metadata: {}
   - kind: 2
     languageId: sql

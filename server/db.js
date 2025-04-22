@@ -72,7 +72,14 @@ const fetchRestaurants = async () => {
 
 const fetchReservations = async () => {
   const SQL = `
-    SELECT * FROM reservation;
+    SELECT reservation.id, 
+      reservation.date, 
+      reservation.party_count, 
+      restaurant.name AS restaurant_name, 
+      customer.name AS customer_name
+    FROM reservation
+    INNER JOIN restaurant ON reservation.restaurant_id = restaurant.id
+    INNER JOIN customer ON reservation.customer_id = customer.id;
   `;
   const response = await client.query(SQL);
   return response.rows;
